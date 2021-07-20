@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:fragment="html_head(title, remove)" th:remove="${remove}">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+    <script
+      type="text/javascript"
+      th:src="@{/webjars/jquery/jquery.min.js}"
+    ></script>
+
+    <script
+      type="text/javascript"
+      th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"
+    ></script>
+    <script type="text/javascript" th:src="@{/js/functions.js}"></script>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      th:href="@{/webjars/font-awesome/css/all.css}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+    />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+
+    <title>[[${title}]] | ShopWise Admin Control Panel</title>
+  </head>
+  <head th:fragment="html_head_reduced">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+    />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/richtext/richtext.min.css}" />
+
+    <title>[[${pageTitle}]] | ShopWise Admin Control Panel</title>
+  </head>
+  <head th:fragment="html_head_richtext">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+    <link rel="stylesheet" th:href="@{/richtext/richtext.min.css}" />
+    <script th:src="@{/richtext/jquery.richtext.min.js}"></script>
+    <title>[[${pageTitle}]] | ShopWise Admin Control Panel</title>
+  </head>
+  <body>
+    /* Begin Column Sorting Link (th) */
+
+    <th
+      th:fragment="column_sort_link(moduleURL, fieldName, columnLabel, removeTag)"
+      th:remove="${removeTag}"
+    >
+      <a
+        class="sort-link"
+        th:href="@{${moduleURL} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortDirection=' + ${sortField != fieldName ? sortDirection : sortDirectionReversed} + ${keyword != null ? '&keyword=' + keyword : ''}}"
+        >[[${columnLabel}]]
+      </a>
+      <span
+        th:if="${sortField == fieldName}"
+        th:class="${sortDirection == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"
+      ></span>
+    </th>
+
+    /* End Column Sorting Link (th) */ /* Begin Action Controls */
+
+    <div th:fragment="action_status(moduleURL, entity)">
+      <!-- enabled button -->
+      <a
+        th:classappend="${(entity.enabled ? ' icon-green ' : ' icon-dark ') + (entity.enabled  ? ' fas fa-check-circle ' : ' fas fa-circle ')}"
+        class="fa-2x enabler"
+        th:href="@{${moduleURL} + '/' + ${entity.id} + '/enabled/' + ${!entity.enabled}}"
+        th:title="${entity.enabled ? 'Disable from ' + moduleURL : 'Enable for ' + moduleURL}"
+      ></a>
+    </div>
+
+    <div th:fragment="action_edit_delete(moduleURL, entity, name, visible)">
+      <!-- edit button -->
+
+      <a
+        class="fas fa-edit fa-2x icon-green"
+        th:href="@{${moduleURL} + '/edit/' + ${entity.id}}"
+        th:title="${'Edit this item in ' + moduleURL}"
+      ></a>
+
+      <!-- delete button -->
+      <div th:remove="tag">
+        <th:block th:if="${visible}"
+          ><a
+            class="far fa-trash-alt fa-2x icon-red link-delete"
+            th:href="@{${moduleURL} +'/delete/' + ${entity.id}}"
+            th:title="${'Remove this from ' + moduleURL}"
+            th:nameOfItem="${name}"
+          ></a
+        ></th:block>
+      </div>
+    </div>
+
+    /* End User card Controls */
+
+    <!-- Messages-->
+    <div th:fragment="messages" th:if="${message != null}" class="success">
+      [[${message}]]
+    </div>
+  </body>
+</html>

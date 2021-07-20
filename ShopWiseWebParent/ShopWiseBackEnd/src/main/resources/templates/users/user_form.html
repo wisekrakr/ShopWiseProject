@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head
+    th:replace="fragments :: html_head('User Form | ShopWise Admin','none')"
+  ></head>
+
+  <body>
+    <div th:replace="header :: header">Header</div>
+
+    <div>
+      <div class="custom-form" th:object="${user}">
+        <div class="row">
+          <div th:if="${!editMode}" class="col-md-3 custom-form-left">
+            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt="" />
+            <h3>Already have an account?</h3>
+            <a th:href="@{/login}" class="btn btn-light m-5">Login</a>
+          </div>
+          <div th:if="${editMode}" class="col-md-3 custom-form-left">
+            <img id="thumbnail" th:src="@{${user.getAvatarPath}}" alt="" />
+            <h3>[[${user.getFullName}]]</h3>
+            <h5>[[${user.createdAt}]]</h5>
+          </div>
+          <div class="col-md-9 custom-form-right">
+            <div class="tab-content" id="myTabContent">
+              <div
+                class="tab-pane fade show active"
+                id="home"
+                role="tabpanel"
+                aria-labelledby="home-tab"
+              >
+                <h3 class="custom-form-heading">[[${pageTitle}]]</h3>
+                <form
+                  th:action="@{/users/save}"
+                  th:object="${user}"
+                  method="post"
+                  enctype="multipart/form-data"
+                  class="row custom-form-form"
+                  onsubmit="return checkEmailUnique(this)"
+                >
+                  <input type="hidden" th:field="*{id}" />
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="First Name *"
+                        th:field="*{firstName}"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Last Name *"
+                        th:field="*{lastName}"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input
+                        type="password"
+                        class="form-control"
+                        placeholder="Password *"
+                        th:field="*{password}"
+                        minlength="8"
+                        maxlength="20"
+                        th:required="${!editMode} ? required : null"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input type="hidden" th:field="*{avatar}" />
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="fileImage"
+                        name="image"
+                        accept="image/png,
+                        image/jpeg"
+                      />
+                      <img
+                        id="thumbnail"
+                        class="text-center thumbnail-round"
+                        th:src="@{${user.getAvatarPath}}"
+                        alt="Avatar Preview"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <input
+                        type="email"
+                        class="form-control"
+                        placeholder="Your Email *"
+                        th:field="*{email}"
+                        required
+                        minlength="8"
+                        maxlength="128"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        minlength="8"
+                        maxlength="20"
+                        class="form-control"
+                        placeholder="Your Phone"
+                        th:field="*{phoneNumber}"
+                      />
+                    </div>
+                    <select
+                      class="form-control select"
+                      multiple
+                      th:field="*{roles}"
+                      data-live-search="true"
+                    >
+                      <option class="hidden" disabled value="0">
+                        Please select your Role(s)
+                      </option>
+                      <option
+                        th:each="role : ${rolesList}"
+                        th:value="${role.id}"
+                        th:text="${role.name}"
+                        data-toggle="tooltip"
+                        th:title="${role.description}"
+                      ></option>
+                    </select>
+                    <div class="form-group ml-4 mt-3">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        placeholder="Enabled"
+                        th:field="*{enabled}"
+                        id="isEnabled"
+                      />
+                      <label class="form-check-label" for="isEnabled">
+                        Enabled
+                      </label>
+                    </div>
+
+                    <input
+                      type="submit"
+                      class="btn btn-wise btn-wise-sm"
+                      th:value="${!editMode} ? Register : Save"
+                    />
+                    <input
+                      type="button"
+                      class="btn btn-wise btn-wise-sm"
+                      value="Back"
+                      id="backButton"
+                    />
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div th:replace="fragments_modal :: modal_dialog">Modal Dialog</div>
+
+      <div th:replace="footer :: footer">Footer</div>
+    </div>
+
+    <script type="text/javascript">
+      moduleURL = "[[@{/users}]]";
+      MAX_FILE_SIZE = 502400; //500kb
+
+      function checkEmailUnique(form) {
+        url = "[[@{/users/check_email}]]";
+        userEmail = $("#email").val();
+        userID = $("#id").val();
+        csrfValue = $("input[name= '_csrf']").val();
+        params = { id: userID, email: userEmail, _csrf: csrfValue };
+
+        $.post(url, params, function (res) {
+          if (res == "OK") {
+            form.submit();
+          } else if (res == "Duplicate") {
+            showModalDialog(
+              "Email not unique",
+              userEmail +
+                " already exists in our database. Please try another E-mail address."
+            );
+          } else {
+            showModalDialog("Error", "Unknown server response");
+          }
+        }).fail(function (err) {
+          //        message = err.message ? err.message !== undefined : err.responseJSON.error;
+          showModalDialog("Error " + err.status, "Server connection error ");
+        });
+
+        return false;
+      }
+    </script>
+    <script type="text/javascript" th:src="@{/js/form_functions.js}"></script>
+  </body>
+</html>

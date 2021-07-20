@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments :: html_head('Category Form', 'none')"></head>
+
+  <body>
+    <div th:replace="header :: header">Header</div>
+
+    <div>
+      <div class="custom-form">
+        <div class="row">
+          <div th:if="${!editMode}" class="col-md-3 custom-form-left">
+            <!-- <img th:src="@{${category.getAvatarPath}}" id="thumbnail" alt="" /> -->
+            <h3>[[${category.name}]]</h3>
+            <!-- Error Message  -->
+            <div th:if="${message != null}" class="warning">[[${message}]]</div>
+          </div>
+          <div class="col-md-9 custom-form-right" th:object="${category}">
+            <div class="tab-content" id="myTabContent">
+              <div
+                class="tab-pane fade show active"
+                id="home"
+                role="tabpanel"
+                aria-labelledby="home-tab"
+              >
+                <h3 class="custom-form-heading">[[${pageTitle}]]</h3>
+
+                <!-- Category Form  -->
+                <form
+                  th:action="@{/categories/save}"
+                  th:object="${category}"
+                  method="post"
+                  enctype="multipart/form-data"
+                  onsubmit="return checkUniqueness(this, moduleURL, 'Category')"
+                  class="row custom-form-form"
+                >
+                  <input type="hidden" th:field="*{id}" />
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Category Name *"
+                        th:field="*{name}"
+                        required
+                        minlength="2"
+                        maxlength="128"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Alias *"
+                        th:field="*{alias}"
+                        required
+                        minlength="3"
+                        maxlength="64"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input type="hidden" th:field="*{image}" />
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="fileImage"
+                        name="fileImage"
+                        accept="image/png,
+                            image/jpeg"
+                        th:required="${category.imagePath == null}"
+                      />
+                      <img
+                        id="thumbnail"
+                        class="text-center thumbnail-square mt-4"
+                        th:src="@{${category.getImagePath}}"
+                        alt="Image Preview"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <select
+                        class="form-control select"
+                        data-live-search="true"
+                        th:field="*{parent}"
+                      >
+                        <label class="form-label">Parent Category:</label>
+                        <option value="0">[No Parent]</option>
+                        <option
+                          th:each="parent : ${categories}"
+                          th:value="${parent.id}"
+                          th:text="${parent.name}"
+                        ></option>
+                      </select>
+                    </div>
+                    <div class="form-group ml-4 mt-3">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        placeholder="Enabled"
+                        th:field="*{enabled}"
+                        id="isEnabled"
+                      />
+                      <label class="form-check-label" for="isEnabled">
+                        Enabled
+                      </label>
+                    </div>
+
+                    <input
+                      type="submit"
+                      class="btn btn-wise btn-wise-sm"
+                      th:value="${!editMode} ? Save : Update"
+                    />
+                    <input
+                      type="button"
+                      class="btn btn-wise btn-wise-sm"
+                      value="Back"
+                      id="backButton"
+                    />
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div th:replace="fragments_modal :: modal_dialog">Modal Dialog</div>
+
+      <!-- Footer -->
+      <div th:replace="footer :: footer">Footer</div>
+    </div>
+
+    <script type="text/javascript">
+      moduleURL = "[[@{/categories}]]";
+      MAX_FILE_SIZE = 502400; //100kb
+    </script>
+    <script type="text/javascript" th:src="@{/js/form_functions.js}"></script>
+  </body>
+</html>

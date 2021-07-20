@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments :: html_head('Brands | ShopWise Admin','none')"> </head>
+  <body>
+    <div th:replace="header :: header">Header</div>
+
+    <div class="container-fluid">
+
+      <div>
+        <h2 class="heading">Manage Brands</h2>
+        <hr />
+
+        <!-- Brand list features/controls  -->
+        <div class="controls">
+          <a
+            class="btn btn-wise mb-3 mr-3"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Create new Brand"
+            th:href="@{/brands/new}"
+            ><i class="fas fa-copyright fa-2x icon-light"></i
+          ></a>
+          <a
+            class="btn btn-wise mb-3 mr-3"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Export to CSV File"
+            th:href="@{/brands/export/csv}"
+            ><i class="fa fa-file-csv fa-2x icon-light"></i
+          ></a>
+        </div>
+
+        <!-- Search bar -->
+        <div th:replace="fragments_search :: search_bar('/brands')">
+          Search Bar
+        </div>
+        <!-- Messages  -->
+        <div th:replace="fragments :: messages">
+          Messages
+        </div>
+      </div>
+  
+
+      <!-- Full category details table -->
+      <div class="full-details">
+        <table
+          class="
+            table table-bordered table-striped table-hover table-responsive-xl
+          "
+        >
+          <thead class="thead-dark">
+            <tr>
+              <th class="hideable-column"> <th
+                th:replace="fragments :: column_sort_link('/brands','id', 'ID','tag')"
+              ></th></th>
+              <th>Brand Logo</th> 
+              <th
+                th:replace="fragments :: column_sort_link('/brands','name', 'Brand Name','none')"
+              ></th>      
+              <th class="hideable-column">Categories</th>                       
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="brand : ${brands}">
+              <td class="hideable-column">[[${brand.id}]]</td>
+              <td>
+                <img
+                  class="thumbnail-square"
+                  th:src="@{${brand.getLogoPath}}"
+                  alt="Brand Image"
+                />
+              </td>       
+              <td>
+                [[${brand.name}]]
+              </td>
+              <th:block th:each="category : ${brand.categories}" class="hideable-column">
+                <td  class="badge badge-secondary" th:text="${category.name}"></td>
+              </th:block>     
+              <td>
+                 <div class="action-controls"
+                th:replace="fragments :: action_edit_delete('/brands',${brand},${brand.name},${brand != null})"
+              >
+                Brand edit and delete controls
+              </div>
+              </td>
+             
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Lesser brand list table (small screens) -->
+      <div class="less-details">
+        <div class="row m-1" th:each="brand: ${brands}">
+          <div class="col-4 ">
+            <img
+              class="thumbnail-square"
+              th:src="@{${brand.getLogoPath}}"
+              alt=""
+            />                   
+          </div>
+          <div class="col-8  mt-4 text-center">
+            <div>[[${brand.name}]]</div>    
+            <div class="mt-2 action-controls">
+              <td
+                th:replace="fragments :: action_edit_delete('/brands',${brand},${brand.name},${brand != null})"
+              >
+                Brand edit and delete controls
+              </td>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        th:replace="fragments_pagination :: pagination('/brands','Brands')"
+      >
+        Pagination
+      </div>
+
+      <div th:replace="fragments_modal :: modal_confirm">
+        Confirm Modal Dialog
+      </div>
+
+      <div th:replace="footer :: footer">Footer</div>
+    </div>
+
+    <script type="text/javascript" th:src="@{/js/list_functions.js}"></script>
+    
+  </body>
+</html>

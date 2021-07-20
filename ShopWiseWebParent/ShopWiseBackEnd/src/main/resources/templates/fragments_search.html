@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments :: html_head"></head>
+  <body>
+    <div th:fragment="search_bar(moduleUrl)" class="input-group">
+      <form th:action="@{${moduleUrl} + '/page/1'}" class="search-box">
+        <input type="hidden" name="sortField" th:value="${sortField}" />
+        <input type="hidden" name="sortDirection" th:value="${sortDirection}" />
+        <input
+          type="search"
+          name="keyword"
+          th:value="${keyword}"
+          class="form-control"
+          placeholder="Search"
+          required
+        />
+        <button type="submit" class="btn btn-wise-static">
+          <i class="fas fa-search"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          th:attr="onclick=|clearSearchQuery('${moduleUrl}')|"
+        >
+          <i class="fas fa-eraser"></i>
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments :: html_head('Users | ShopWise Admin', 'none')"> </head>
+  <body>
+    <div th:replace="header :: header">Header</div>
+
+    <div class="container-fluid">
+
+      <div>
+        <h2 class="heading">Manage Users</h2>
+        <hr />
+
+        <!-- User list features/controls  -->
+
+        <div class="controls">
+          <a
+            class="btn btn-wise mb-3 mr-3"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Create new user"
+            th:href="@{/users/new}"
+            ><i class="fa fa-user-plus fa-2x icon-light"></i
+          ></a>
+          <a
+            class="btn btn-wise mb-3 mr-3"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Export to PDF File"
+            th:href="@{/users/export/pdf}"
+            ><i class="fa fa-file-pdf fa-2x icon-light"></i
+          ></a>
+          <a
+            class="btn btn-wise mb-3 mr-3"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Export to Excel File"
+            th:href="@{/users/export/excel}"
+            ><i class="fa fa-file-excel fa-2x icon-light"></i
+          ></a>
+          <a
+            class="btn btn-wise mb-3 mr-3"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Export to CSV File"
+            th:href="@{/users/export/csv}"
+            ><i class="fa fa-file-csv fa-2x icon-light"></i
+          ></a>
+        </div>
+
+        <!-- Search bar -->
+        <div th:replace="fragments_search :: search_bar('/users')">
+          Search Bar
+        </div>
+        <!-- Messages  -->
+        <div th:replace="fragments :: messages">Messages</div>
+      </div>
+
+      <!-- Full user details table -->
+      <div class="full-details">
+        <table
+          class="
+            table table-bordered table-striped table-hover table-responsive-xl
+          "
+        >
+          <thead class="thead-dark">
+            <tr>
+              <th class="hideable-column"><th
+                th:replace="fragments :: column_sort_link('/users','id', 'ID','tag')"
+              ></th></th>
+              
+
+              <th>Avatar</th>
+              <th
+                th:replace="fragments :: column_sort_link('/users','email', 'E-Mail','none')"
+              ></th>
+              <th class="hideable-column">Phone Number</th>
+              <th
+                th:replace="fragments :: column_sort_link('/users','firstName', 'First Name','none')"
+              ></th>
+              <th
+                th:replace="fragments :: column_sort_link('/users','lastName', 'Last Name','none')"
+              ></th>
+              <th>Role(s)</th>
+              <th
+                th:replace="fragments :: column_sort_link('/users','enabled', 'Enabled','none')"
+              ></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="user : ${users}">
+              <td class="hideable-column">
+                [[${user.id}]] <br />
+                Created at: <br />[[${user.createdAt}]]
+              </td>
+              <td>
+                <img
+                  class="thumbnail-round"
+                  th:src="@{${user.getAvatarPath}}"
+                  alt=""
+                />
+              </td>
+              <td>[[${user.email}]]</td>
+              <td class="hideable-column">[[${user.phoneNumber}]]</td>
+              <td>[[${user.firstName}]]</td>
+              <td>[[${user.lastName}]]</td>
+              <td>[[${user.roles}]]</td>
+              <td>
+                <div
+                  class="action-controls"
+                  th:replace="fragments :: action_status('/users',${user})"
+                >
+                  User toggle enabled
+                </div>
+              </td>
+              <td>
+                <div
+                  th:replace="fragments :: action_edit_delete('/users',${user},${user.fullName},${user != null})"
+                >
+                  User edit and delete controls
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Lesser user list table (small screens) -->
+      <div class="less-details">
+        <div class="row m-1" th:each="user: ${users}">
+          <div class="col-4">
+            <img
+              class="thumbnail-round"
+              th:src="@{${user.getAvatarPath}}"
+              alt=""
+            />
+          </div>
+          <div class="col-8 text-center mt-4">
+            <div>[[${user.getFullName}]]</div>
+            <div>[[${user.roles}]]</div>
+            <div class="mt-2 action-controls">
+              <div th:replace="fragments :: action_status('/users',${user})">
+                User toggle enabled
+              </div>
+              <div
+                th:replace="fragments :: action_edit_delete('/users',${user},${user.fullName},${user != null})"
+              >
+                User edit and delete controls
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div th:replace="fragments_pagination :: pagination('/users','Users')">
+        Pagination
+      </div>
+
+      <div th:replace="fragments_modal :: modal_confirm">
+        Confirm Modal Dialog
+      </div>
+
+      <div th:replace="footer :: footer">Footer</div>
+    </div>
+
+    <script type="text/javascript" th:src="@{/js/list_functions.js}"></script>
+  </body>
+</html>

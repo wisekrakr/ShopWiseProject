@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments :: html_head('Error Code 403','none')"></head>
+  <body>
+    <div th:replace="header :: header">Header</div>
+
+    <div class="container-fluid">
+      <div class="error m-3">
+        <h2>Uh-oh, you do not have permission to view this page.</h2>
+      </div>
+
+      <div th:replace="footer :: footer">Footer</div>
+    </div>
+  </body>
+</html>

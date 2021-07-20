@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="fragments :: html_head('Brand Form','none')"></head>
+
+  <body>
+    <div th:replace="header :: header">Header</div>
+
+    <div>
+      <div class="custom-form">
+        <div class="row">
+          <div th:if="${!editMode}" class="col-md-3 custom-form-left">
+            <h3>[[${brand.name}]]</h3>
+            <!-- Error Message  -->
+            <div th:if="${message != null}" class="warning">[[${message}]]</div>
+          </div>
+          <div class="col-md-9 custom-form-right" th:object="${brand}">
+            <div class="tab-content" id="myTabContent">
+              <div
+                class="tab-pane fade show active"
+                id="home"
+                role="tabpanel"
+                aria-labelledby="home-tab"
+              >
+                <h3 class="custom-form-heading">[[${pageTitle}]]</h3>
+
+                <!-- Brand Form  -->
+                <form
+                  th:action="@{/brands/save}"
+                  th:object="${brand}"
+                  method="post"
+                  enctype="multipart/form-data"
+                  onsubmit="return checkUniqueness(this, moduleURL, 'Brand')"
+                  class="row custom-form-form"
+                  th:name="${editMode}"
+                >
+                  <input type="hidden" th:field="*{id}" />
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Brand Name *"
+                        th:field="*{name}"
+                        required
+                        minlength="2"
+                        maxlength="128"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input type="hidden" th:field="*{logo}" />
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="fileImage"
+                        name="fileImage"
+                        accept="image/png,
+                            image/jpeg"
+                        th:required="${brand.id == null}"
+                      />
+                      <img
+                        id="thumbnail"
+                        class="text-center thumbnail-square mt-4"
+                        th:src="@{${brand.getLogoPath}}"
+                        alt="Logo Preview"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group row">
+                      <label class="form-label"
+                        >Select one or more categories:</label
+                      >
+                      <select
+                        class="form-control select"
+                        multiple
+                        required
+                        style="resize: vertical; height: 200px"
+                        th:field="*{categories}"
+                        data-live-search="true"
+                      >
+                        <th:block th:each="category: ${categoryList}">
+                          <option th:value="${category.id}">
+                            [[${category.name}]]
+                          </option>
+                        </th:block>
+                      </select>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-4 col-form-label"
+                        >Chosen categories:</label
+                      >
+                      <div class="col-sm-8">
+                        <div id="chosenCategories"></div>
+                      </div>
+                    </div>
+                    <input
+                      type="submit"
+                      class="btn btn-wise btn-wise-sm"
+                      th:value="${!editMode} ? Save : Update"
+                    />
+                    <input
+                      type="button"
+                      class="btn btn-wise btn-wise-sm"
+                      value="Back"
+                      id="backButton"
+                    />
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div th:replace="fragments_modal :: modal_dialog">Modal Dialog</div>
+
+      <!-- Footer -->
+      <div th:replace="footer :: footer">Footer</div>
+    </div>
+
+    <script type="text/javascript">
+      moduleURL = "[[@{/brands}]]";
+      MAX_FILE_SIZE = 102400; //100kb
+
+      $(document).ready(function () {
+        dropDownCategories = $("#categories");
+        divChosenCategories = $("#chosenCategories");
+
+        dropDownCategories.change(function () {
+          divChosenCategories.empty();
+          showChosenCategories();
+        });
+        showChosenCategories();
+      });
+
+      function showChosenCategories() {
+        dropDownCategories.children("option:selected").each(function () {
+          selectedCategory = $(this);
+          categoryId = selectedCategory.val();
+          categoryName = selectedCategory.text().replace(/>/g, "");
+
+          divChosenCategories.append(
+            "<span class='badge badge-secondary m-1'>" +
+              categoryName +
+              " <span/>"
+          );
+        });
+      }
+    </script>
+    <script type="text/javascript" th:src="@{/js/form_functions.js}"></script>
+  </body>
+</html>
