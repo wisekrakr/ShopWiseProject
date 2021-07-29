@@ -1,10 +1,12 @@
 package com.shopwise.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
@@ -14,6 +16,8 @@ import java.io.Serializable;
 @Setter
 public class ProductDetail implements Serializable{
 
+    @Serial
+    private static final long serialVersionUID = 4306493248136084267L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -26,6 +30,7 @@ public class ProductDetail implements Serializable{
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonBackReference
     private Product product;
 
     public ProductDetail(Integer id, String name, String value, Product product) {

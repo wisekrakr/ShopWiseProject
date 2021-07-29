@@ -36,11 +36,11 @@ function getCategories() {
 
 function getCategoriesForNewForm() {
   catIdField = $("#categoryId");
-  editMode = false;
+  edit = false;
 
   if (catIdField.length) {
-    editMode = true;
+    edit = true;
   }
 
-  if (!editMode) getCategories();
+  if (!edit) getCategories();
 }

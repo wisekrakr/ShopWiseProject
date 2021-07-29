@@ -1,6 +1,9 @@
 package com.shopwise.admin.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -42,9 +45,10 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler(finalPath).addResourceLocations("file:/" + path + "/");
     }
 
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("index");
-        registry.addViewController("/login").setViewName("login");
-    }
+//    @Override
+//    public void addViewControllers(ViewControllerRegistry registry) {
+//        registry.addViewController("/").setViewName("index");
+//        registry.addViewController("/login").setViewName("login");
+//
+//    }
 }

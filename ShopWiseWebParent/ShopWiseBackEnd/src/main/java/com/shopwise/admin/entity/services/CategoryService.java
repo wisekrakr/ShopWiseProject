@@ -54,7 +54,7 @@ public class CategoryService implements ICategoryService {
 
         Pageable pageable = PageRequest.of(pageNumber -1, CATEGORIES_PER_PAGE, sort);
 
-        Page<Category> pageCategories = null;
+        Page<Category> pageCategories;
 
         if (keyword != null && !keyword.isEmpty()) {
             pageCategories = repository.findAllWithKeyword(keyword, pageable);
@@ -189,6 +189,12 @@ public class CategoryService implements ICategoryService {
      */
     @Override
     public Category save(Category category) {
+        Category parent = category.getParent();
+        if(parent != null){
+            String parentIDs = parent.getParentIDs() == null ? "-" : parent.getParentIDs();
+            parentIDs += parent.getId() + "-";
+            category.setParentIDs(parentIDs);
+        }
         return repository.save(category);
     }
 

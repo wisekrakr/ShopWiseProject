@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
@@ -16,6 +17,8 @@ import java.io.Serializable;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Role implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = -8256592183370427630L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

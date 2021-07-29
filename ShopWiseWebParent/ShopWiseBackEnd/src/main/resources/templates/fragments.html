@@ -81,26 +81,25 @@
       ></a>
     </div>
 
-    <div th:fragment="action_edit_delete(moduleURL, entity, name, visible)">
-      <!-- edit button -->
-
+    <div th:fragment="action_edit(moduleURL, entity)">
       <a
         class="fas fa-edit fa-2x icon-green"
         th:href="@{${moduleURL} + '/edit/' + ${entity.id}}"
         th:title="${'Edit this item in ' + moduleURL}"
       ></a>
-
-      <!-- delete button -->
-      <div th:remove="tag">
-        <th:block th:if="${visible}"
-          ><a
-            class="far fa-trash-alt fa-2x icon-red link-delete"
-            th:href="@{${moduleURL} +'/delete/' + ${entity.id}}"
-            th:title="${'Remove this from ' + moduleURL}"
-            th:nameOfItem="${name}"
-          ></a
-        ></th:block>
-      </div>
+    </div>
+    <div
+      th:fragment="action_delete(moduleURL, entity, name, visible)"
+      th:remove="tag"
+    >
+      <th:block th:if="${visible}"
+        ><a
+          class="far fa-trash-alt fa-2x icon-red link-delete"
+          th:href="@{${moduleURL} +'/delete/' + ${entity.id}}"
+          th:title="${'Remove this from ' + moduleURL}"
+          th:nameOfItem="${name}"
+        ></a
+      ></th:block>
     </div>
 
     /* End User card Controls */

@@ -18,35 +18,43 @@ import java.util.Set;
 public class ProductSaveHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductSaveHelper.class);
 
-    public static void deleteExtraImagesRemovedOnForm(Product product) {
+    public static void setMainImageName(MultipartFile mainImageFile, Product product) {
 
-        LOGGER.info("ProductSaveHelper | deleteExtraImagesRemovedOnForm is started");
+        LOGGER.info("ProductSaveHelper | setMainImageName is started");
 
-        String extraImageDir = "./ShopWiseWebParent/product-images/" + product.getId() + "/extras";
-        Path dirPath = Paths.get(extraImageDir);
+        if (!mainImageFile.isEmpty()) {
+            String fileName = StringUtils.cleanPath(mainImageFile.getOriginalFilename());
 
-        try {
-            Files.list(dirPath).forEach(file -> {
-                String filename = file.toFile().getName();
-
-                if (!product.containsImageName(filename)) {
-                    try {
-                        Files.delete(file);
-                        LOGGER.info("Deleted extra image: " + filename);
-
-                    } catch (IOException e) {
-                        LOGGER.error("Could not delete extra image: " + filename);
-                    }
-                }
-
-            });
-        } catch (IOException ex) {
-            LOGGER.error("Could not list directory: " + dirPath);
+            product.setMainImage(fileName);
         }
+
+        LOGGER.info("ProductSaveHelper | setMainImageName is completed");
     }
 
+
+    public static void setNewExtraImageNames(MultipartFile[] extraImageFiles, Product product) {
+
+        LOGGER.info("ProductSaveHelper | setNewExtraImageNames is started");
+
+        if (extraImageFiles.length > 0) {
+            for (MultipartFile multipartFile : extraImageFiles) {
+                if (!multipartFile.isEmpty()) {
+
+                    String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+
+                    if (!product.containsImageName(fileName)) {
+                        product.addExtraImage(fileName);
+                    }
+                }
+            }
+        }
+
+        LOGGER.info("ProductSaveHelper | setExtraImageNames is completed");
+    }
+
+
     public static void setExistingExtraImageNames(String[] imageIDs, String[] imageNames,
-                                                   Product product) {
+                                                  Product product) {
 
         LOGGER.info("ProductSaveHelper | setExistingExtraImageNames is started");
 
@@ -65,43 +73,8 @@ public class ProductSaveHelper {
 
     }
 
-    public static void  setNewExtraImageNames(MultipartFile[] extraImageFiles, Product product) {
 
-        LOGGER.info("ProductSaveHelper | setNewExtraImageNames is started");
-
-        if (extraImageFiles.length > 0) {
-
-            for (MultipartFile multipartFile : extraImageFiles) {
-
-                if (!multipartFile.isEmpty()) {
-
-                    String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-
-                    if (!product.containsImageName(fileName)) {
-                        product.addExtraImage(fileName);
-                    }
-                }
-            }
-        }
-
-        LOGGER.info("ProductSaveHelper | setExtraImageNames is completed");
-    }
-
-    public static void  setMainImageName(MultipartFile mainImageFile, Product product) {
-
-        LOGGER.info("ProductSaveHelper | setMainImageName is started");
-
-        if (!mainImageFile.isEmpty()) {
-
-            String fileName = StringUtils.cleanPath(mainImageFile.getOriginalFilename());
-
-            product.setMainImage(fileName);
-        }
-
-        LOGGER.info("ProductSaveHelper | setMainImageName is completed");
-    }
-
-    public static void  saveUploadedImages(MultipartFile mainImageFile,
+    public static void saveUploadedImages(MultipartFile mainImageFile,
                                            MultipartFile[] extraImageFiles, Product savedProduct) throws IOException {
 
         LOGGER.info("ProductSaveHelper | saveUploadedImages is started");
@@ -134,15 +107,42 @@ public class ProductSaveHelper {
         LOGGER.info("ProductSaveHelper | saveUploadedImages is completed");
     }
 
+    public static void deleteExtraImagesRemovedOnForm(Product product) {
+
+        LOGGER.info("ProductSaveHelper | deleteExtraImagesRemovedOnForm is started");
+
+        String extraImageDir = "./ShopWiseWebParent/product-images/" + product.getId() + "/extras";
+        Path dirPath = Paths.get(extraImageDir);
+
+        try {
+            Files.list(dirPath).forEach(file -> {
+                String filename = file.toFile().getName();
+
+                if (!product.containsImageName(filename)) {
+                    try {
+                        Files.delete(file);
+                        LOGGER.info("Deleted extra image: " + filename);
+
+                    } catch (IOException e) {
+                        LOGGER.error("Could not delete extra image: " + filename);
+                    }
+                }
+
+            });
+        } catch (IOException ex) {
+            LOGGER.error("Could not list directory: " + dirPath);
+        }
+    }
+
     public static void setProductDetails(String[] detailIDs, String[] detailNames,
                                           String[] detailValues, Product product) {
 
         if (detailNames == null || detailNames.length == 0) return;
 
-        for (int count = 0; count < detailNames.length; count++) {
-            String name = detailNames[count];
-            String value = detailValues[count];
-            int id = Integer.parseInt(detailIDs[count]);
+        for (int i = 0; i < detailNames.length; i++) {
+            String name = detailNames[i];
+            String value = detailValues[i];
+            int id = Integer.parseInt(detailIDs[i]);
 
             if (id != 0) {
                 product.addDetail(id, name, value);

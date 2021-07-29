@@ -1,4 +1,4 @@
-var extraImagesCount = 0;
+let extraImagesCount = 0;
 
 $(document).ready(function () {
   $("input[name='extraFileImage']").each(function (index) {
@@ -59,7 +59,7 @@ function addExtraImageSection(index) {
       <img
         src="${defaultImageUrl}"
         alt="Extra Product Image #${index + 1}"
-        class="thumbnail-product img-fluid"
+        class="thumbnail-product img-fluid mt-4"
         id="extraThumbnail${index}"
       />
     </div>

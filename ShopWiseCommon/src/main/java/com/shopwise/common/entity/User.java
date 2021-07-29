@@ -3,13 +3,10 @@ package com.shopwise.common.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +18,8 @@ import java.util.Set;
 @Setter
 public class User implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 4285956468270828920L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -99,6 +98,15 @@ public class User implements Serializable {
     @Transient
     public String getFullName(){
         return firstName + " " + lastName;
+    }
+
+    public boolean hasRole(String roleName){
+
+        for (Role role : roles) {
+            if (role.getName().equals(roleName)) return true;
+        }
+
+        return false;
     }
 
     @Override

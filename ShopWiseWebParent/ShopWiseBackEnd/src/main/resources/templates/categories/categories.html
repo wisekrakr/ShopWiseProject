@@ -72,12 +72,6 @@
                 [[${category.name}]]<br />
                 <div th:if="${category.parent != null}">
                   <span style="font-size: 12px">Parent:</span>
-                  <!-- <ul
-                    class="list-children"
-                    th:each="child : ${category.children}"
-                  >
-                    <li class="list-child">[[${category.parent.name}]]</li>
-                  </ul> -->
                   <span>[[${category.parent.name}]]</span>
                 </div>
               </td>
@@ -91,11 +85,17 @@
                 </div>
               </td>
               <td>
-                <div
-                  class="action-controls"
-                  th:replace="fragments :: action_edit_delete('/categories',${category},${category.name},${!category.hasChildren})"
-                >
-                  Category edit and delete controls
+                <div class="action-controls">
+                  <div
+                    th:replace="fragments :: action_edit('/categories',${category})"
+                  >
+                    Category edit
+                  </div>
+                  <div
+                    th:replace="fragments :: action_delete('/categories',${category},${category.name},${category != null})"
+                  >
+                    Category delete
+                  </div>
                 </div>
               </td>
             </tr>
@@ -122,10 +122,14 @@
                 Category toggle enabled
               </div>
               <div
-                class="mt-2"
-                th:replace="fragments :: action_edit_delete('/categories',${category},${category.name},${!category.hasChildren})"
+                th:replace="fragments :: action_edit('/categories',${category})"
               >
-                Category edit and delete controls
+                Category edit
+              </div>
+              <div
+                th:replace="fragments :: action_delete('/categories',${category},${category.name},${category != null})"
+              >
+                Category delete
               </div>
             </div>
           </div>

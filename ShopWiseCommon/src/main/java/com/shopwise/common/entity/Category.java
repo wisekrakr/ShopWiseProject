@@ -1,10 +1,13 @@
 package com.shopwise.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +18,9 @@ import java.util.Set;
 @Getter
 @Setter
 public class Category implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -1170158823308975188L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +37,6 @@ public class Category implements Serializable {
 
     private boolean enabled;
 
-
     @Transient
     private boolean hasChildren;
 
@@ -39,10 +44,13 @@ public class Category implements Serializable {
     @JoinColumn(name = "parent_id")
     private Category parent;
 
+    @Column(name = "parent_ids", length = 256)
+    private String parentIDs;
+
     @OneToMany(mappedBy = "parent")
     @OrderBy("name asc")
+    @JsonBackReference
     private Set<Category>children = new HashSet<>();
-
 
     public Category(Integer id) {
         this.id = id;
@@ -111,11 +119,18 @@ public class Category implements Serializable {
         return "/category-images/" + this.id + "/" + this.image;
     }
 
+    @Transient
+    public String getImagePathReact(){
+        if (this.id == null || image == null || image.isEmpty()) return "/assets/default-product.png";
+        return "/category-images/" + this.id + "/" + this.image;
+    }
+
     @Override
     public String toString() {
         return "Category{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", alias='" + alias + '\'' +
                 ", enabled=" + enabled +
                 '}';
     }

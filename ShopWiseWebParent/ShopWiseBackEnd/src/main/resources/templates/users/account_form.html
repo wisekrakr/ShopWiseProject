@@ -4,149 +4,146 @@
 
   <body>
     <div th:replace="header :: header">Header</div>
-    <div class="container-fluid">
-      <div>
-        <div class="container-fluid custom-form" th:object="${user}">
-          <div class="row">
-            <div class="col-md-3 custom-form-left">
-              <img th:src="@{${user.getAvatarPath}}" id="thumbnail" alt="" />
-              <h3>[[${user.getFullName}]]</h3>
-              <!-- Error Message  -->
-              <div th:if="${message != null}" class="warning">
-                [[${message}]]
-              </div>
-            </div>
-            <div class="col-md-9 custom-form-right">
-              <div class="tab-content" id="myTabContent">
-                <div
-                  class="tab-pane fade show active"
-                  id="home"
-                  role="tabpanel"
-                  aria-labelledby="home-tab"
+
+    <div>
+      <div class="custom-form" th:object="${user}">
+        <div class="row">
+          <div class="col-md-3 custom-form-left">
+            <img th:src="@{${user.getAvatarPath}}" id="thumbnail" alt="" />
+            <h3>[[${user.getFullName}]]</h3>
+            <!-- Error Message  -->
+            <div th:if="${message != null}" class="warning">[[${message}]]</div>
+          </div>
+          <div class="col-md-9 custom-form-right">
+            <div class="tab-content" id="myTabContent">
+              <div
+                class="tab-pane fade show active"
+                id="home"
+                role="tabpanel"
+                aria-labelledby="home-tab"
+              >
+                <h3 class="custom-form-heading">[[${pageTitle}]]</h3>
+
+                <!-- Account Form  -->
+                <form
+                  th:action="@{/account/update}"
+                  th:object="${user}"
+                  method="post"
+                  enctype="multipart/form-data"
+                  class="row custom-form-form"
                 >
-                  <h3 class="custom-form-heading">[[${pageTitle}]]</h3>
-
-                  <!-- Account Form  -->
-                  <form
-                    th:action="@{/account/update}"
-                    th:object="${user}"
-                    method="post"
-                    enctype="multipart/form-data"
-                    class="row custom-form-form"
-                  >
-                    <input type="hidden" th:field="*{id}" />
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="First Name *"
-                          th:field="*{firstName}"
-                          required
-                        />
-                      </div>
-                      <div class="form-group">
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="Last Name *"
-                          th:field="*{lastName}"
-                          required
-                        />
-                      </div>
-                      <div class="form-group">
-                        <input
-                          type="password"
-                          th:field="*{password}"
-                          class="form-control"
-                          placeholder="unchanged if left blank..."
-                          minlength="8"
-                          maxlength="20"
-                          oninput="checkPasswordMatch(document.getElementById('confirmPassword'))"
-                        />
-                      </div>
-                      <div class="form-group">
-                        <input
-                          type="password"
-                          id="confirmPassword"
-                          class="form-control"
-                          placeholder="to change confirm your password here..."
-                          minlength="8"
-                          maxlength="20"
-                          oninput="checkPasswordMatch(this)"
-                        />
-                      </div>
-                      <div class="form-group">
-                        <input type="hidden" th:field="*{avatar}" />
-                        <input
-                          type="file"
-                          class="form-control"
-                          id="fileImage"
-                          name="image"
-                          accept="image/png,
+                  <input type="hidden" th:field="*{id}" />
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="First Name *"
+                        th:field="*{firstName}"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Last Name *"
+                        th:field="*{lastName}"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input
+                        type="password"
+                        th:field="*{password}"
+                        class="form-control"
+                        placeholder="unchanged if left blank..."
+                        minlength="8"
+                        maxlength="20"
+                        oninput="checkPasswordMatch(document.getElementById('confirmPassword'))"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input
+                        type="password"
+                        id="confirmPassword"
+                        class="form-control"
+                        placeholder="to change confirm your password here..."
+                        minlength="8"
+                        maxlength="20"
+                        oninput="checkPasswordMatch(this)"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input type="hidden" th:field="*{avatar}" />
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="fileImage"
+                        name="image"
+                        accept="image/png,
                         image/jpeg"
-                        />
-                        <img
-                          id="thumbnail"
-                          class="text-center thumbnail-round"
-                          th:src="@{${user.getAvatarPath}}"
-                          alt="Avatar Preview"
-                        />
+                      />
+                      <img
+                        id="thumbnail"
+                        class="text-center thumbnail-round"
+                        th:src="@{${user.getAvatarPath}}"
+                        alt="Avatar Preview"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <input
+                        type="email"
+                        class="form-control"
+                        placeholder="Your Email"
+                        th:field="*{email}"
+                        readonly="readonly"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        minlength="8"
+                        maxlength="20"
+                        class="form-control"
+                        placeholder="Your Phone"
+                        th:field="*{phoneNumber}"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label class="col-form-label">Assigned Roles</label>
+                      <div>
+                        <span><b>[[${user.roles}]]</b> </span>
                       </div>
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <input
-                          type="email"
-                          class="form-control"
-                          placeholder="Your Email"
-                          th:field="*{email}"
-                          readonly="readonly"
-                        />
-                      </div>
-                      <div class="form-group">
-                        <input
-                          type="text"
-                          minlength="8"
-                          maxlength="20"
-                          class="form-control"
-                          placeholder="Your Phone"
-                          th:field="*{phoneNumber}"
-                        />
-                      </div>
-                      <div class="form-group">
-                        <label class="col-form-label">Assigned Roles</label>
-                        <div>
-                          <span><b>[[${user.roles}]]</b> </span>
-                        </div>
-                      </div>
-                      <div class="form-group ml-4 mt-3">
-                        <input
-                          type="checkbox"
-                          class="form-check-input"
-                          placeholder="Enabled"
-                          th:field="*{enabled}"
-                          id="isEnabled"
-                        />
-                        <label class="form-check-label" for="isEnabled">
-                          Enabled
-                        </label>
-                      </div>
+                    <div class="form-group ml-4 mt-3">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        placeholder="Enabled"
+                        th:field="*{enabled}"
+                        id="isEnabled"
+                      />
+                      <label class="form-check-label" for="isEnabled">
+                        Enabled
+                      </label>
+                    </div>
 
-                      <input
-                        type="submit"
-                        class="btn btn-wise btn-wise-sm"
-                        value="Save"
-                      />
-                      <input
-                        type="button"
-                        class="btn btn-wise btn-wise-sm"
-                        value="Back"
-                        id="backButton"
-                      />
-                    </div>
-                  </form>
-                </div>
+                    <input
+                      type="submit"
+                      class="btn btn-wise btn-wise-sm"
+                      value="Save"
+                    />
+                    <input
+                      type="button"
+                      class="btn btn-wise btn-wise-sm"
+                      value="Back"
+                      id="backButton"
+                    />
+                  </div>
+                </form>
               </div>
             </div>
           </div>

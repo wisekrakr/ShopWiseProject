@@ -33,7 +33,7 @@
               alt=""
             />
             <h3>[[${product.name}]]</h3>
-            <h5>[[${product.getCreateDate}]]</h5>
+            <h5>[[${product.getDate}]]</h5>
           </div>
           <div class="col-md-9 custom-form-right">
             <h3 class="custom-form-heading">[[${pageTitle}]]</h3>
@@ -125,47 +125,94 @@
                     id="fullDescription"
                     role="tabpanel"
                   >
-                    <div th:replace="products/product_description :: content">
-                      Product Description
-                    </div>
+                    <th:block sec:authorize="hasAuthority('Sales')">
+                      <div
+                        th:replace="products/product_description_readonly :: content"
+                      >
+                        Product Description Read Only
+                      </div>
+                    </th:block>
+                    <th:block
+                      sec:authorize="hasAnyAuthority('Admin', 'Editor')"
+                    >
+                      <div th:replace="products/product_description :: content">
+                        Product Description
+                      </div>
+                    </th:block>
                   </div>
                   <div class="tab-pane p-3" id="images" role="tabpanel">
-                    <div th:replace="products/product_images :: content">
-                      Product Images
-                    </div>
+                    <th:block sec:authorize="hasAuthority('Sales')">
+                      <div
+                        th:replace="products/product_images_readonly :: content"
+                      >
+                        Product Images Read Only
+                      </div>
+                    </th:block>
+                    <th:block
+                      sec:authorize="hasAnyAuthority('Admin', 'Editor')"
+                    >
+                      <div th:replace="products/product_images :: content">
+                        Product Images
+                      </div>
+                    </th:block>
                   </div>
                   <div class="tab-pane p-3" id="details" role="tabpanel">
-                    <div th:replace="products/product_details :: content">
-                      Product Details
-                    </div>
-                    <div>
-                      <input
-                        type="button"
-                        class="btn-wise-xs"
-                        value="Add More Details"
-                        onclick="addDetailSection()"
-                      />
-                    </div>
+                    <th:block sec:authorize="hasAuthority('Sales')">
+                      <div
+                        th:replace="products/product_details_readonly :: content"
+                      >
+                        Product Details Read Only
+                      </div>
+                    </th:block>
+
+                    <th:block
+                      sec:authorize="hasAnyAuthority('Admin', 'Editor')"
+                    >
+                      <div th:replace="products/product_details :: content">
+                        Product Details
+                      </div>
+                      <div>
+                        <button
+                          class="btn-wise-static"
+                          onclick="addDetailSection()"
+                          title="Add Detail"
+                        >
+                          <i class="fas fa-plus-circle fa-3x icon-light"></i>
+                        </button>
+                      </div>
+                    </th:block>
                   </div>
                   <div class="tab-pane p-3" id="shipping" role="tabpanel">
-                    <div th:replace="products/product_shipping :: content">
-                      Product Shipping
-                    </div>
+                    <th:block sec:authorize="hasAuthority('Sales')">
+                      <div
+                        th:replace="products/product_shipping_readonly :: content"
+                      >
+                        Product Shipping Read Only
+                      </div>
+                    </th:block>
+
+                    <th:block
+                      sec:authorize="hasAnyAuthority('Admin', 'Editor')"
+                    >
+                      <div th:replace="products/product_shipping :: content">
+                        Product Shipping
+                      </div>
+                    </th:block>
                   </div>
                 </div>
-              </div>
-              <div class="col-md-3 mx-auto">
-                <input
-                  type="submit"
-                  class="btn btn-wise btn-wise-sm"
-                  th:value="${!editMode} ? Save : Update"
-                />
-                <input
-                  type="button"
-                  class="btn btn-wise btn-wise-sm"
-                  value="Back"
-                  id="backButton"
-                />
+                <div class="col-md-3 mx-auto">
+                  <input
+                    type="submit"
+                    class="btn btn-wise btn-wise-sm"
+                    th:value="${!editMode} ? Save : Update"
+                  />
+                  <input
+                    type="button"
+                    class="btn btn-wise btn-wise-sm"
+                    value="Back"
+                    id="backButton"
+                  />
+                </div>
               </div>
             </form>
           </div>

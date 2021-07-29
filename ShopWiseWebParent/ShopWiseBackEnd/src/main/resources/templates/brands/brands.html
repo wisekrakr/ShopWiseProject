@@ -79,9 +79,18 @@
               </th:block>     
               <td>
                  <div class="action-controls"
-                th:replace="fragments :: action_edit_delete('/brands',${brand},${brand.name},${brand != null})"
+                
               >
-                Brand edit and delete controls
+              <div
+              th:replace="fragments :: action_edit('/brands',${brand})"
+            >
+              Brand edit
+            </div>
+            <div
+              th:replace="fragments :: action_delete('/brands',${brand},${brand.name},${brand != null})"
+            >
+            Brand delete
+            </div>
               </div>
               </td>
              
@@ -103,11 +112,16 @@
           <div class="col-8  mt-4 text-center">
             <div>[[${brand.name}]]</div>    
             <div class="mt-2 action-controls">
-              <td
-                th:replace="fragments :: action_edit_delete('/brands',${brand},${brand.name},${brand != null})"
+              <div
+                th:replace="fragments :: action_edit('/brands',${brand})"
               >
-                Brand edit and delete controls
-              </td>
+                Brand edit
+              </div>
+              <div
+                th:replace="fragments :: action_delete('/brands',${brand},${brand.name},${brand != null})"
+              >
+              Brand delete
+              </div>
             </div>
           </div>
         </div>

@@ -113,12 +113,19 @@
                   User toggle enabled
                 </div>
               </td>
-              <td>
-                <div
-                  th:replace="fragments :: action_edit_delete('/users',${user},${user.fullName},${user != null})"
-                >
-                  User edit and delete controls
-                </div>
+              <td >
+                <div class="action-controls">
+                  <div
+                    th:replace="fragments :: action_edit('/users',${user})"
+                  >
+                    Brand edit
+                  </div>
+                  <div
+                    th:replace="fragments :: action_delete('/users',${user},${user.fullName},${user != null})"
+                  >
+                  Brand delete
+                  </div>
+                </div>              
               </td>
             </tr>
           </tbody>
@@ -143,9 +150,14 @@
                 User toggle enabled
               </div>
               <div
-                th:replace="fragments :: action_edit_delete('/users',${user},${user.fullName},${user != null})"
+                th:replace="fragments :: action_edit('/users',${user})"
               >
-                User edit and delete controls
+                User edit 
+              </div>
+              <div
+                th:replace="fragments :: action_delete('/users',${user},${user.fullName},${user != null})"
+              >
+                User delete 
               </div>
             </div>
           </div>

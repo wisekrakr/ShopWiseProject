@@ -1,11 +1,13 @@
 package com.shopwise.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,6 +21,8 @@ import java.util.Set;
 @Setter
 public class Brand implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = -8246150078693376894L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -35,7 +39,7 @@ public class Brand implements Serializable {
             joinColumns = @JoinColumn(name = "brand_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-
+    @JsonManagedReference
     private Set<Category> categories = new HashSet<>();
 
     public Brand(String name) {

@@ -6,17 +6,19 @@ import com.shopwise.admin.utils.ProductNotFoundException;
 import com.shopwise.common.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 @Transactional
 public class ProductService implements IProductService {
+
+    public static final int PRODUCTS_PER_PAGE = 4;
 
     @Autowired
     private ProductRepository repository;
@@ -97,11 +99,35 @@ public class ProductService implements IProductService {
 
     @Override
     public Page<Product> getByPage(int pageNumber, String sortField, String sortDirection, String keyword, Integer categoryId) {
-        return null;
+        Sort sort = Sort.by(sortField);
+
+        sort = sortDirection.equals("asc") ? sort.ascending() : sort.descending();
+
+        Pageable pageable = PageRequest.of(pageNumber - 1, PRODUCTS_PER_PAGE, sort);
+
+        if (keyword != null && !keyword.isEmpty()) {
+
+            if (categoryId != null && categoryId > 0) {
+                String categoryIdMatch = "-" + categoryId + "-";
+                return repository.searchInCategory(categoryId, categoryIdMatch, keyword, pageable);
+            }
+            return repository.findAll(keyword, pageable);
+        }
+
+        if (categoryId != null && categoryId > 0) {
+            String categoryIdMatch = "-" + categoryId + "-";
+            return repository.findAllInCategory(categoryId, categoryIdMatch, pageable);
+        }
+        return repository.findAll(pageable);
     }
 
     @Override
     public void saveProductPrice(Product productInForm) {
+        Product productInDB = repository.findById(productInForm.getId()).get();
+        productInDB.setCost(productInForm.getCost());
+        productInDB.setPrice(productInForm.getPrice());
+        productInDB.setDiscountPercentage(productInForm.getDiscountPercentage());
 
+        repository.save(productInDB);
     }
 }

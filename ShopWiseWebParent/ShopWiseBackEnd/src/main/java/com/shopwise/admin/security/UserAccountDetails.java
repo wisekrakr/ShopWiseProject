@@ -6,12 +6,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 public record UserAccountDetails(User user) implements UserDetails {
+
+    @Serial
+    private static final long serialVersionUID = 8979587001464005721L;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -76,4 +80,7 @@ public record UserAccountDetails(User user) implements UserDetails {
         this.user.setPhoneNumber(phoneNumber);
     }
 
+    public boolean hasRole(String roleName){
+        return user.hasRole(roleName);
+    }
 }

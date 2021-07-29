@@ -211,4 +211,13 @@ public class CategoryRepositoryTests {
         assertThat(category).isNotNull();
         assertThat(category.getAlias()).contains(name);
     }
+
+    @Test void testPuttingParentIDsOnCategory(){
+        Iterable<Category> all = repository.findAll();
+
+        for (Category category: all){
+            repository.save(category);
+        }
+
+    }
 }

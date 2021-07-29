@@ -1,5 +1,6 @@
 package com.shopwise.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -58,16 +59,20 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonBackReference
     private Category category;
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
+    @JsonBackReference
     private Brand brand;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true) //within the ProductImage entity
+    @JsonBackReference
     private Set<ProductImage>images = new HashSet<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private List<ProductDetail> details = new ArrayList<>();
 
     @Transient
@@ -88,9 +93,9 @@ public class Product {
 //     * This data is not mapped to the database
 //     */
     @Transient
-    public String getCreateDate(){
+    public String getDate(){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        return format.format(createdAt);
+        return updatedAt != null ? format.format(updatedAt) : format.format(createdAt);
     }
 
     public void addExtraImage(String imageName){
@@ -117,9 +122,17 @@ public class Product {
     }
 
     @Transient
-    public String getShortName() {
+    public String getShortenedName() {
         if (name.length() > 70) {
             return name.substring(0, 70).concat("...");
+        }
+        return name;
+    }
+
+    @Transient
+    public String getShortestName() {
+        if (name.length() > 30) {
+            return name.substring(0, 30).concat("...");
         }
         return name;
     }
@@ -141,8 +154,7 @@ public class Product {
                 ", createdAt=" + createdAt +
                 ", stock=" + stock +
                 ", price=" + price +
-                ", category=" + category +
-                ", brand=" + brand +
+
                 '}';
     }
 
