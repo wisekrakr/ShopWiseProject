@@ -1,6 +1,5 @@
 package com.shopwise.admin.entity.controllers;
 
-import com.shopwise.admin.entity.services.CategoryService;
 import com.shopwise.admin.entity.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;

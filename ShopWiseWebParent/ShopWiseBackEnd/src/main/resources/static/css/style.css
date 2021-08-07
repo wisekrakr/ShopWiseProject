@@ -207,29 +207,28 @@ a:hover {
 
 .custom-form .nav-tabs {
   margin-top: 3%;
-  border: 2px solid var(--secondary-color);
+  /* border: 2px solid var(--secondary-color); */
   background: transparent;
   border-radius: 1.5rem;
-  /* width: 28%; */
-  /* float: right; */
 }
 .custom-form .nav-tabs .nav-link {
   padding: 2%;
   height: 35px;
   width: 120px;
   font-weight: 600;
-  color: var(--tertiary-light);
-  background: #fff;
-  border-top-right-radius: 1.5rem;
-  border-bottom-right-radius: 1.5rem;
+  color: var(--primary-light);
+  background: var(--tertiary-light);
+  /* border-top-right-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem; */
 }
 
 .custom-form .nav-tabs .nav-link.active {
-  width: 200px;
-  color: var(--tertiary-color);
+  /* width: 200px; */
+  color: var(--primary-light);
+  background: var(--tertiary-light);
   border: 2px solid var(--secondary-color);
-  border-top-left-radius: 1.5rem;
-  border-bottom-left-radius: 1.5rem;
+  /* border-top-left-radius: 1.5rem;
+  border-bottom-left-radius: 1.5rem; */
 }
 .custom-form-heading {
   text-align: center;

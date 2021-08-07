@@ -52,6 +52,9 @@ public class Category implements Serializable {
     @JsonBackReference
     private Set<Category>children = new HashSet<>();
 
+    @Transient
+    private Set<Category>subCategories = new HashSet<>();
+
     public Category(Integer id) {
         this.id = id;
     }
@@ -123,6 +126,14 @@ public class Category implements Serializable {
     public String getImagePathReact(){
         if (this.id == null || image == null || image.isEmpty()) return "/assets/default-product.png";
         return "/category-images/" + this.id + "/" + this.image;
+    }
+
+    @Transient
+    public String getShortName() {
+        if (name.length() > 12) {
+            return name.substring(0, 12).concat("...");
+        }
+        return name;
     }
 
     @Override

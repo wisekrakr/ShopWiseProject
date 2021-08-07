@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <head th:replace="fragments :: html_head('Settings','tag')"></head>
+    <link rel="stylesheet" th:href="@{/richtext/richtext.min.css}" />
+    <script th:src="@{/richtext/jquery.richtext.min.js}"></script>
+    <script th:src="@{/richtext/placeholderTypewriter.js}"></script>
+  </head>
+
+  <body>
+    <div th:replace="header :: header">Header</div>
+
+    <div>
+      <div class="custom-form" th:object="${product}">
+        <div class="row">
+          <div class="col-md-3 custom-form-left">
+            <h4>[[${pageTitle}]]</h4>
+            <div>
+              <!-- Error Message  -->
+              <div th:if="${message != null}" class="warning">
+                [[${message}]]
+              </div>
+            </div>
+            <!-- Toast Message  -->
+            <div
+              class="toast justify-content-center d-flex"
+              role="alert"
+              aria-live="polite"
+              aria-atomic="true"
+              data-delay="5000"
+            >
+              <div role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-body">
+                  <span class="text-dark" id="toastMessage"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-9 custom-form-right">
+            <div class="custom-form-nav-tabs">
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs ml-5" id="settingsTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link active"
+                    data-toggle="tab"
+                    href="#general"
+                    role="tab"
+                  >
+                    General
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    data-toggle="tab"
+                    href="#countries"
+                    role="tab"
+                  >
+                    Countries
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    data-toggle="tab"
+                    href="#states"
+                    role="tab"
+                  >
+                    States
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    data-toggle="tab"
+                    href="#mailServer"
+                    role="tab"
+                  >
+                    Mail Server
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    data-toggle="tab"
+                    href="#mailTemplates"
+                    role="tab"
+                  >
+                    Mail Templates
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link"
+                    data-toggle="tab"
+                    href="#payment"
+                    role="tab"
+                  >
+                    Payment
+                  </button>
+                </li>
+              </ul>
+
+              <!-- Tab panes -->
+              <div class="tab-content">
+                <div class="tab-pane active p-3" id="general" role="tabpanel">
+                  <div th:replace="settings/general :: content">General</div>
+                </div>
+                <div class="tab-pane p-3" id="countries" role="tabpanel">
+                  <div th:replace="settings/countries :: content">
+                    Countries
+                  </div>
+                </div>
+                <div class="tab-pane p-3" id="states" role="tabpanel">
+                  <div th:replace="settings/states :: content">States</div>
+                </div>
+                <div class="tab-pane p-3" id="mailServer" role="tabpanel">
+                  <div th:replace="settings/mail_server :: content">
+                    Mail Server
+                  </div>
+                </div>
+                <div class="tab-pane p-3" id="mailTemplates" role="tabpanel">
+                  <div th:replace="settings/mail_templates :: content">
+                    Mail Templates
+                  </div>
+                </div>
+                <div class="tab-pane p-3" id="shipping" role="tabpanel">
+                  <h2>Payment</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div th:replace="fragments_modal :: modal_dialog">Modal Dialog</div>
+
+      <div th:replace="footer :: footer">Footer</div>
+    </div>
+
+    <script type="text/javascript">
+      MAX_FILE_SIZE = 102400; // 100KB
+      contextPath = "[[@{/}]]";
+      var csrfHeaderName = "[[${_csrf.headerName}]]";
+      var csrfValue = "[[${_csrf.token}]]";
+
+      $(document).ready(function () {
+        $("#customerVerificationContent").richText();
+      });
+    </script>
+
+    <!-- <script type="text/javascript" th:src="@{/js/form_functions.js}"></script> -->
+    <script
+      type="text/javascript"
+      th:src="@{/js/settings_countries.js}"
+    ></script>
+    <script th:src="@{/js/settings_states.js}"></script>
+  </body>
+</html>

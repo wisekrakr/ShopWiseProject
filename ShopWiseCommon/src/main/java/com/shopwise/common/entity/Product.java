@@ -54,6 +54,16 @@ public class Product {
     private float height;
     private float weight;
 
+    private float rating;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "product_reviews",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "review_id")
+    )
+    private Set<Review> reviews = new HashSet<>();
+
     @Column(name = "main_image", nullable = false)
     private String mainImage;
 
@@ -131,8 +141,8 @@ public class Product {
 
     @Transient
     public String getShortestName() {
-        if (name.length() > 30) {
-            return name.substring(0, 30).concat("...");
+        if (name.length() > 20) {
+            return name.substring(0, 20).concat("...");
         }
         return name;
     }

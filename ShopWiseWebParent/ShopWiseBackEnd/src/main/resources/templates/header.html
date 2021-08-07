@@ -57,7 +57,8 @@
                 >
                 <div class="dropdown-menu">
                   <a class="dropdown-item" th:href="@{/categories/new}"
-                    ><i class="fa fa-plus-circle"></i> New</a>
+                    ><i class="fa fa-plus-circle"></i> New</a
+                  >
                   >
                   <a class="dropdown-item" th:href="@{/categories}">View All</a>
                 </div>
@@ -72,7 +73,8 @@
                 >
                 <div class="dropdown-menu">
                   <a class="dropdown-item" th:href="@{/brands/new}"
-                    ><i class="fa fa-plus-circle"></i> New</a>
+                    ><i class="fa fa-plus-circle"></i> New</a
+                  >
                   >
                   <a class="dropdown-item" th:href="@{/brands}">View All</a>
                 </div>
@@ -94,7 +96,8 @@
                     class="dropdown-item"
                     th:href="@{/products/new}"
                     sec:authorize="hasAnyAuthority('Admin', 'Editor')"
-                    ><i class="fa fa-plus-circle"></i> New</a>
+                    ><i class="fa fa-plus-circle"></i> New</a
+                  >
                   >
                   <a class="dropdown-item" th:href="@{/products}">View All</a>
                 </div>
@@ -142,8 +145,33 @@
                 <a class="nav-link" th:href="@{/menus}">Menus</a>
               </li>
             </th:block>
-            <li class="nav-item" sec:authorize="hasAuthority('Admin')">
-              <a class="nav-link" th:href="@{/settings}">Settings</a>
+            <li class="nav-item dropdown" sec:authorize="hasAuthority('Admin')">
+              <a
+                class="nav-link dropdown-toggle"
+                data-toggle="dropdown"
+                th:href="@{/settings}"
+                >Settings</a
+              >
+              <div class="dropdown-menu">
+                <a class="dropdown-item" th:href="@{/settings#general}"
+                  >General</a
+                >
+                <a class="dropdown-item" th:href="@{/settings#countries}"
+                  >Countries</a
+                >
+                <a class="dropdown-item" th:href="@{/settings#states}"
+                  >States</a
+                >
+                <a class="dropdown-item" th:href="@{/settings#mailServer}"
+                  >Mail Server</a
+                >
+                <a class="dropdown-item" th:href="@{/settings#mailTemplates}"
+                  >Main Templates</a
+                >
+                <a class="dropdown-item" th:href="@{/settings#payment}"
+                  >Payment</a
+                >
+              </div>
             </li>
             <li>
               <span class="fas fa-user fa-2x icon-silver"></span>

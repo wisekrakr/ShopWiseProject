@@ -34,6 +34,7 @@ public class MvcConfig implements WebMvcConfigurer {
         addResourceHandler("./ShopWiseWebParent/category-images",registry);
         addResourceHandler("./ShopWiseWebParent/brand-logos",registry);
         addResourceHandler("./ShopWiseWebParent/product-images",registry);
+        addResourceHandler("./ShopWiseWebParent/site-logo",registry);
     }
 
     private void addResourceHandler(String dirName,ResourceHandlerRegistry registry){

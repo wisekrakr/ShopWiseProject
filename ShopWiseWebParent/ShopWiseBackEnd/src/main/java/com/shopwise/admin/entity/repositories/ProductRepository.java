@@ -1,8 +1,6 @@
 package com.shopwise.admin.entity.repositories;
 
-import com.shopwise.common.entity.Category;
 import com.shopwise.common.entity.Product;
-import com.shopwise.common.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;

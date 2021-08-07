@@ -27,7 +27,7 @@
     />
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
 
-    <title>[[${title}]] | ShopWise Admin Control Panel</title>
+    <title>[[${title}]] | [[${SITE_NAME}]]</title>
   </head>
   <head th:fragment="html_head_reduced">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -41,7 +41,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
     <link rel="stylesheet" th:href="@{/richtext/richtext.min.css}" />
 
-    <title>[[${pageTitle}]] | ShopWise Admin Control Panel</title>
+    <title>[[${pageTitle}]] | [[${SITE_NAME}]]</title>
   </head>
   <head th:fragment="html_head_richtext">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -49,7 +49,7 @@
 
     <link rel="stylesheet" th:href="@{/richtext/richtext.min.css}" />
     <script th:src="@{/richtext/jquery.richtext.min.js}"></script>
-    <title>[[${pageTitle}]] | ShopWise Admin Control Panel</title>
+    <title>[[${pageTitle}]] | [[${SITE_NAME}]]</title>
   </head>
   <body>
     /* Begin Column Sorting Link (th) */

@@ -18,6 +18,7 @@ public class ProductImage implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -7016311632762196999L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
